@@ -1,14 +1,14 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
 import { Modal } from 'antd';
-import { Result } from "./http.service";
+import { Result, SafeAny } from "./http.service";
 const host = window.location.host;
 const systemURL = window.location.protocol + '//' + host;
 
 const axiosInstance: AxiosInstance = axios.create({
-    baseURL: systemURL + '/f2',
+    baseURL: systemURL,
     timeout: 5000,
 });
-let modal: any = null;
+let modal: SafeAny = null;
 axiosInstance.interceptors.response.use((data: AxiosResponse<Result>) => data, () => {
     if (!modal) {
         modal = Modal.warning({

@@ -1,21 +1,22 @@
 import instance from './axios.config';
 import { AxiosResponse, AxiosRequestConfig } from 'axios';
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type SafeAny = any;
 export interface Result {
   code: number;
   message: string;
-  data: any;
+  data: SafeAny;
 }
 
 export default class HttpService {
-  static getRequestConfig(query: { [key: string]: any }): AxiosRequestConfig {
-    let config = {
+  static getRequestConfig(query: { [key: string]: SafeAny }): AxiosRequestConfig {
+    const config = {
       params: query,
     };
     return config;
   }
 
-  static get(url: string, params = {}): Promise<any> {
+  static get(url: string, params = {}): Promise<SafeAny> {
     return new Promise((resolve, reject) => {
       instance
         .get(url, this.getRequestConfig(params))
@@ -32,7 +33,7 @@ export default class HttpService {
     });
   }
 
-  static post(url: string, data: any, params?: any): Promise<any> {
+  static post(url: string, data: SafeAny, params?: SafeAny): Promise<SafeAny> {
     return new Promise((resolve, reject) => {
       instance
         .post(url, data, this.getRequestConfig(params))

@@ -6,7 +6,7 @@ import Backend from "./pages/back-end/Backend";
 import Frontend from "./pages/front-end/Frontend";
 import Nav from "./pages/Nav";
 
-function App() {
+const App: React.FC = (): JSX.Element => {
   return (
     <div className="App">
       <Header />
