@@ -6,21 +6,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-
-
-html {
-  min-height: 100%;
-}
-
-body {
-  min-height: 100%;
   background: #F0F2F5;
+  height: calc(100% - 70px);
 }
 
 code {

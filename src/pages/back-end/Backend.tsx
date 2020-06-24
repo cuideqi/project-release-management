@@ -1,10 +1,11 @@
 /* eslint-disable react/display-name */
-import React from 'react';
+import React, { useState } from 'react';
 import { useGet } from '../../hooks/useHttp';
 import Table, { ColumnType } from 'antd/lib/table';
 import { formatToSeconds } from '../../utils/time.util';
-import { SafeAny } from '../../http/http.service';
-import { Button } from 'antd';
+import HttpService, { SafeAny } from '../../http/http.service';
+import { Button, Modal } from 'antd';
+import BackendProjectVersion from './BackendProjectVersion';
 interface BackendProjectInfo {
   service: string;
   repoName: string;
@@ -14,7 +15,19 @@ interface BackendProjectInfo {
   imageCreateTime: string;
 }
 const Backend: React.FC = () => {
-  const data = useGet<BackendProjectInfo[]>('/mock/90/backend/listServiceImageInfo', []);
+  let {data, regetData} = useGet<BackendProjectInfo[]>('/backend/listServiceImageInfo', []);
+  const [visible, setVisible] = useState(false);
+  const [repo_name, setRepoName] = useState<string>('');
+  const [new_tag, setOriginTag] = useState<string>('');
+  function handleCancel(): void {
+    setVisible(false);
+  }
+  function changeProjectVersion(origin_tag: string): void {
+    setVisible(false);
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    HttpService.get('/repo/addNewTag', {repo_name, origin_tag, new_tag})
+      .then(() => regetData())
+  }
   const columns: ColumnType<BackendProjectInfo>[] = [
     {
       title: '编号',
@@ -57,18 +70,35 @@ const Backend: React.FC = () => {
       key: 'action',
       render: (text: SafeAny, record: BackendProjectInfo): JSX.Element => (
         <Button type="primary" onClick={(): void => {
-          console.log(record);
+          setRepoName(record.repoName);
+          setOriginTag(record.tag);
+          setVisible(true);
         }}>切换</Button>
       )
     }
   ];
   return (
-    <div>
+    <div className="panel">
       <Table
         pagination={false}
         columns={columns}
+        bordered={true}
         dataSource={data.map((item, index) => ({ ...item, key: index + 1 }))}
       />
+      <Modal
+        centered={true}
+        title="版本选择"
+        visible={visible}
+        width={900}
+        onCancel={handleCancel}
+        footer={null}
+        destroyOnClose
+      >
+        <BackendProjectVersion
+        repo_name={repo_name}
+        changeProjectVersion={changeProjectVersion}
+        />
+      </Modal>
     </div>
   )
 }

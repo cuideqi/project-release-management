@@ -9,11 +9,18 @@
 }
 
 .content {
-  margin-left: 220px;
+  margin: 0 50px 50px 220px;
   background: #fff;
-  margin-right: 50px;
 }
 
 .panel {
   padding: 20px;
+}
+
+$height: 80px;
+.ant-menu-item.nav-item {
+  height: $height;
+  line-height: $height;
+  font-size: 16px;
+  text-align: center;
 }

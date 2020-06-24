@@ -6,7 +6,7 @@ const systemURL = window.location.protocol + '//' + host;
 
 const axiosInstance: AxiosInstance = axios.create({
     baseURL: systemURL,
-    timeout: 5000,
+    timeout: 60000,
 });
 let modal: SafeAny = null;
 axiosInstance.interceptors.response.use((data: AxiosResponse<Result>) => data, () => {

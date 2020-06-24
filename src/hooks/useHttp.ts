@@ -2,15 +2,17 @@
 import { useEffect, useState } from 'react';
 import Http, { SafeAny } from '../http/http.service';
 
-export function useGet<T>(url: string, defaultValue?: SafeAny, query?: SafeAny): T {
+export function useGet<T>(url: string, defaultValue?: SafeAny, query?: SafeAny): {data: T, regetData: (queryData?: SafeAny) => void} {
   const [data, setData] = useState<T>(defaultValue);
   useEffect(() => {
-    Http.get(url, query).then(data => {
-      console.log(data);
+    regetData(query);
+  }, [])
+  function regetData(queryData: SafeAny = query) {
+    Http.get(url, queryData).then(data => {
       setData(data);
     })
-  }, [])
-  return data;
+  }
+  return {data, regetData}
 }
 
 // export function usePost<T>(url: string, postData?: SafeAny, query?: SafeAny): T {
